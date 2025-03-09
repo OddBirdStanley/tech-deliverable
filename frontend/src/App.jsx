@@ -1,3 +1,4 @@
+import { QuoteManager } from "./components.jsx";
 import "./App.css";
 
 function App() {
@@ -17,12 +18,7 @@ function App() {
 			</form>
 
 			<h2>Previous Quotes</h2>
-			{/* TODO: Display the actual quotes from the database */}
-			<div className="messages">
-				<p>Peter Anteater</p>
-				<p>Zot Zot Zot!</p>
-				<p>Every day</p>
-			</div>
+			<QuoteManager/>
 		</div>
 	);
 }
