@@ -1,4 +1,4 @@
-import { QuoteManager } from "./components.jsx";
+import QuoteManager from "./QuoteManager.jsx";
 import "./App.css";
 
 function App() {
