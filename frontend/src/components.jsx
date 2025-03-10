@@ -1,13 +1,8 @@
-import { Component, createRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import "./components.css"
 
-class Starry extends Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		return (
+function Starry(props) {
+	return (
 <div className="starry">
 	<img src="starry.svg"/>
 	<img src="starry.svg"/>
@@ -18,100 +13,81 @@ class Starry extends Component {
 	<img src="starry.svg"/>
 	<img src="starry.svg"/>
 </div>
-		);
-	}
+	);
 }
 
-class QuoteForm extends Component {
-	constructor(props) {
-		super(props);
-		this.inputRef1 = createRef();
-		this.inputRef2 = createRef();
-	}
+function QuoteForm(props) {
+	const inputRef1 = useRef(null);
+	const inputRef2 = useRef(null);
 
-	submit = async (e) => {
+	const submit = async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 		
-		let data = new FormData(e.target);
-		await fetch("/api/quote", {"method": "POST", body: data});
-		this.inputRef1.current.value = "";
-		this.inputRef2.current.value = "";
-		this.props.update();
+		await fetch("/api/quote", {"method": "POST", body: new FormData(e.target)});
+		inputRef1.current.value = "";
+		inputRef2.current.value = "";
+		props.update();
 	}
 
-	render() {
-		return (
-<form className="quote-form-body" action="/quote" method="POST" onSubmit={this.submit}>
+	return (
+<form className="quote-form-body" action="/quote" method="POST" onSubmit={submit}>
 	<div className="quote-form-input-box">
 		<label htmlFor="name" className="quote-form-input-label">Name:</label>
-		<input type="text" name="name" required ref={this.inputRef1} className="quote-form-input"/>
+		<input type="text" name="name" required ref={inputRef1} className="quote-form-input"/>
 	</div>
 	<div className="quote-form-input-box">
 		<label htmlFor="message" className="quote-form-input-label">Quote:</label>
-		<input type="text" name="message" required ref={this.inputRef2} className="quote-form-input quote-form-input-long"/>
+		<input type="text" name="message" required ref={inputRef2} className="quote-form-input quote-form-input-long"/>
 	</div>
 	<input type="submit" value="Submit" className="quote-submit"/>
 	<p style={{marginLeft: "10px"}}>(press to watch the stars!)</p>
 </form>
-		);
-	}
+	);
 }
 
-class QuoteDisplay extends Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		return (
+function QuoteDisplay(props) {
+	return (
 <tr>
-	<td>{this.props.name}</td>
-	<td>{this.props.quote}</td>
-	<td>{this.props.time}</td>
+	<td>{props.name}</td>
+	<td>{props.quote}</td>
+	<td>{props.time}</td>
 </tr>
-		);
-	}
+	);
 }
 
-export class QuoteManager extends Component {
-	state = {
-		starryKey: 0,
-		quotes: []	
-	};
+export function QuoteManager(props) {
+	const [starryKey, setStarryKey] = useState(0);
+	const [quotes, setQuotes] = useState([]);
+	const historyFormRef = useRef(null);	
 	
-	constructor(props) {
-		super(props);
-		this.historyFormRef = createRef();
+	let loadQuotesAsync = async () => {
+		let response = await (await fetch("api/history", {method: "POST", body: new FormData(historyFormRef.current)})).json();
+		setStarryKey(starryKey + 1);
+		setQuotes(response["quotes"]);
 	}
 
-	loadQuotesAsync = async () => {
-		let response = await (await fetch("api/history", {method: "POST", body: new FormData(this.historyFormRef.current)})).json();
-		this.setState({starryKey: this.state.starryKey + 1, quotes: response["quotes"]});
-	}
-
-	loadQuotes = (e) => {
+	let loadQuotes = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		this.loadQuotesAsync();
+		loadQuotesAsync();
 	}
 
-	componentDidMount() {
-		this.loadQuotesAsync();
-	}
-
-	render() {
-		return (
+	useEffect(() => {
+		loadQuotesAsync();
+	}, []);
+	
+	return (
 <div style={{padding: "20px"}}>
-	<Starry key={this.state.starryKey}/>
+	<Starry key={starryKey}/>
 	<div>
 		<h2>Submit a new Quote</h2>
-		<QuoteForm update={this.loadQuotesAsync}/>
+		<QuoteForm update={loadQuotesAsync}/>
 	</div>
 	<div>
 		<h2>Find Quotes</h2>
-		<form ref={this.historyFormRef} action="/api/history" method="POST" onSubmit={this.loadQuotes}>
-			<select name="span" class="quote-history-select">
+		<form ref={historyFormRef} action="/api/history" method="POST" onSubmit={loadQuotes}>
+			<select name="span" className="quote-history-select">
 				<option value={1}>last day</option>
 				<option value={7}>last week</option>
 				<option value={30}>last month</option>
@@ -130,12 +106,11 @@ export class QuoteManager extends Component {
 					</tr>
 				</thead>
 				<tbody>
-					{this.state.quotes.map((v, i) => <QuoteDisplay key={i} name={v.name} quote={v.message} time={new Date(Date.parse(v.time)).toLocaleString()}/>)}
+					{quotes.map((v, i) => <QuoteDisplay key={i} name={v.name} quote={v.message} time={new Date(Date.parse(v.time)).toLocaleString()}/>)}
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
-		);	
-	}
+	);
 }
