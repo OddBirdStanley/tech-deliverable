@@ -74,3 +74,143 @@
 .quote-history-body {
 	margin-top: 10px;
 }
+
+.starry {
+	position: absolute;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+@keyframes starry-kf-1 {
+    from {
+        top: -10vh;
+        left: -50vw;
+        rotate: 0deg;
+         opacity: 1;
+    }
+    to {
+        top: 110vh;
+        left: 50vw;
+        rotate: 1800deg;
+    }
+}
+@keyframes starry-kf-2 {
+    from {
+        top: -10vh;
+        left: -30vw;
+        rotate: 0deg;
+         opacity: 1;
+    }
+    to {
+        top: 110vh;
+        left: 70vw;
+        rotate: 1800deg;
+    }
+}
+@keyframes starry-kf-3 {
+    from {
+        top: -10vh;
+        left: -10vw;
+        rotate: 0deg;
+         opacity: 1;
+    }
+    to {
+        top: 110vh;
+        left: 90vw;
+        rotate: 1800deg;
+    }
+}
+@keyframes starry-kf-4 {
+    from {
+        top: -10vh;
+        left: 0vw;
+        rotate: 0deg;
+         opacity: 1;
+    }
+    to {
+        top: 110vh;
+        left: 100vw;
+        rotate: 1800deg;
+    }
+}
+@keyframes starry-kf-5 {
+    from {
+        top: -10vh;
+        left: 10vw;
+        rotate: 0deg;
+         opacity: 1;
+    }
+    to {
+        top: 110vh;
+        left: 110vw;
+        rotate: 1800deg;
+    }
+}
+@keyframes starry-kf-6 {
+    from {
+        top: -10vh;
+        left: 20vw;
+        rotate: 0deg;
+         opacity: 1;
+    }
+    to {
+        top: 110vh;
+        left: 120vw;
+        rotate: 1800deg;
+    }
+}
+@keyframes starry-kf-7 {
+    from {
+        top: -10vh;
+        left: 30vw;
+        rotate: 0deg;
+         opacity: 1;
+    }
+    to {
+        top: 110vh;
+        left: 130vw;
+        rotate: 1800deg;
+    }
+}
+@keyframes starry-kf-8 {
+    from {
+        top: -10vh;
+        left: 60vw;
+        rotate: 0deg;
+         opacity: 1;
+    }
+    to {
+        top: 110vh;
+        left: 160vw;
+        rotate: 1800deg;
+    }
+}
+
+.starry img {
+	position: relative;
+	opacity: 0;
+	animation-duration: 7.5s;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
+}
+
+.starry img:nth-child(even) {
+	width: 25px;
+	height: 25px;	
+}
+
+.starry img:nth-child(odd) {
+	width: 50px;
+	height: 50px;	
+}
+
+.starry img:nth-child(1) { animation-name: starry-kf-1; animation-delay: 1s; }
+.starry img:nth-child(2) { animation-name: starry-kf-2; animation-delay: 0.4s; }
+.starry img:nth-child(3) { animation-name: starry-kf-3; animation-delay: 0.6s; }
+.starry img:nth-child(4) { animation-name: starry-kf-4; animation-delay: 0.1s; }
+.starry img:nth-child(5) { animation-name: starry-kf-5; animation-delay: 1.2s; }
+.starry img:nth-child(6) { animation-name: starry-kf-6; animation-delay: 0.7s; }
+.starry img:nth-child(7) { animation-name: starry-kf-7; animation-delay: 0.45s; }
+.starry img:nth-child(8) { animation-name: starry-kf-8; animation-delay: 1.1s; }

@@ -52,10 +52,10 @@ def quote_history(span: int = Form(ge=-1, le=365)) -> JSONResponse:
 	ct = time.time()
 	diff = span * 86400
 	if diff >= 0:
-		for q in database["quotes"]:
+		for q in reversed(database["quotes"]):
 			qt = time.mktime(datetime.fromisoformat(q["time"]).timetuple())
 			if ct - qt < diff:
 				resp.append(q)
 	else:
-		resp = database["quotes"]
+		resp = list(reversed(database["quotes"]))
 	return JSONResponse({"quotes": resp})

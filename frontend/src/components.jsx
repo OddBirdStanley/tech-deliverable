@@ -1,6 +1,27 @@
 import { Component, createRef } from "react";
 import "./components.css"
 
+class Starry extends Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return (
+<div className="starry">
+	<img src="starry.svg"/>
+	<img src="starry.svg"/>
+	<img src="starry.svg"/>
+	<img src="starry.svg"/>
+	<img src="starry.svg"/>
+	<img src="starry.svg"/>
+	<img src="starry.svg"/>
+	<img src="starry.svg"/>
+</div>
+		);
+	}
+}
+
 class QuoteForm extends Component {
 	constructor(props) {
 		super(props);
@@ -31,6 +52,7 @@ class QuoteForm extends Component {
 		<input type="text" name="message" required ref={this.inputRef2} className="quote-form-input quote-form-input-long"/>
 	</div>
 	<input type="submit" value="Submit" className="quote-submit"/>
+	<p style={{marginLeft: "10px"}}>(press to watch the stars!)</p>
 </form>
 		);
 	}
@@ -41,16 +63,12 @@ class QuoteDisplay extends Component {
 		super(props);
 	}
 
-	formatTime(time) {
-		return time;
-	}
-
 	render() {
 		return (
 <tr>
 	<td>{this.props.name}</td>
 	<td>{this.props.quote}</td>
-	<td>{this.formatTime(this.props.time)}</td>
+	<td>{this.props.time}</td>
 </tr>
 		);
 	}
@@ -58,6 +76,7 @@ class QuoteDisplay extends Component {
 
 export class QuoteManager extends Component {
 	state = {
+		starryKey: 0,
 		quotes: []	
 	};
 	
@@ -68,7 +87,7 @@ export class QuoteManager extends Component {
 
 	loadQuotesAsync = async () => {
 		let response = await (await fetch("api/history", {method: "POST", body: new FormData(this.historyFormRef.current)})).json();
-		this.setState({quotes: response["quotes"]});
+		this.setState({starryKey: this.state.starryKey + 1, quotes: response["quotes"]});
 	}
 
 	loadQuotes = (e) => {
@@ -77,9 +96,14 @@ export class QuoteManager extends Component {
 		this.loadQuotesAsync();
 	}
 
+	componentDidMount() {
+		this.loadQuotesAsync();
+	}
+
 	render() {
 		return (
-<div>
+<div style={{padding: "20px"}}>
+	<Starry key={this.state.starryKey}/>
 	<div>
 		<h2>Submit a new Quote</h2>
 		<QuoteForm update={this.loadQuotesAsync}/>
