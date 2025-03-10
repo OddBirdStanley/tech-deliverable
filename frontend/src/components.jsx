@@ -1,8 +1,11 @@
 import { Component, createRef } from "react";
+import "./components.css"
 
 class QuoteForm extends Component {
 	constructor(props) {
 		super(props);
+		this.inputRef1 = createRef();
+		this.inputRef2 = createRef();
 	}
 
 	submit = async (e) => {
@@ -11,21 +14,23 @@ class QuoteForm extends Component {
 		
 		let data = new FormData(e.target);
 		await fetch("/api/quote", {"method": "POST", body: data});
+		this.inputRef1.current.value = "";
+		this.inputRef2.current.value = "";
 		this.props.update();
 	}
 
 	render() {
 		return (
-<form action="/quote" method="POST" onSubmit={this.submit}>
-	<div>
-		<label htmlFor="name">Name:</label>
-		<input type="text" name="name"/>
+<form className="quote-form-body" action="/quote" method="POST" onSubmit={this.submit}>
+	<div className="quote-form-input-box">
+		<label htmlFor="name" className="quote-form-input-label">Name:</label>
+		<input type="text" name="name" required ref={this.inputRef1} className="quote-form-input"/>
 	</div>
-	<div>
-		<label htmlFor="message">Quote:</label>
-		<input type="text" name="message"/>
+	<div className="quote-form-input-box">
+		<label htmlFor="message" className="quote-form-input-label">Quote:</label>
+		<input type="text" name="message" required ref={this.inputRef2} className="quote-form-input quote-form-input-long"/>
 	</div>
-	<input type="submit" value="Submit"/>
+	<input type="submit" value="Submit" className="quote-submit"/>
 </form>
 		);
 	}
@@ -75,30 +80,36 @@ export class QuoteManager extends Component {
 	render() {
 		return (
 <div>
-	<QuoteForm update={this.loadQuotesAsync}/>
-	<form ref={this.historyFormRef} action="/api/history" method="POST" onSubmit={this.loadQuotes}>
-		<select name="span">
-			<option value={1}>last day</option>
-			<option value={7}>last week</option>
-			<option value={30}>last month</option>
-			<option value={365}>last year</option>
-			<option value={-1}>all</option>
-		</select>
-		<input value="Find" type="submit"/> 
-	</form>
 	<div>
-		<table>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Quote</th>
-					<th>Time</th>
-				</tr>
-			</thead>
-			<tbody>
-				{this.state.quotes.map((v, i) => <QuoteDisplay key={i} name={v.name} quote={v.message} time={new Date(Date.parse(v.time)).toLocaleString()}/>)}
-			</tbody>
-		</table>
+		<h2>Submit a new Quote</h2>
+		<QuoteForm update={this.loadQuotesAsync}/>
+	</div>
+	<div>
+		<h2>Find Quotes</h2>
+		<form ref={this.historyFormRef} action="/api/history" method="POST" onSubmit={this.loadQuotes}>
+			<select name="span" class="quote-history-select">
+				<option value={1}>last day</option>
+				<option value={7}>last week</option>
+				<option value={30}>last month</option>
+				<option value={365}>last year</option>
+				<option value={-1}>all</option>
+			</select>
+			<input value="Find" type="submit" className="quote-submit"/> 
+		</form>
+		<div className="quote-history-body">
+			<table className="quote-table">
+				<thead>
+					<tr>
+						<th style={{width: "15%"}}>Name</th>
+						<th style={{width: "65%"}}>Quote</th>
+						<th style={{width: "20%"}}>Time</th>
+					</tr>
+				</thead>
+				<tbody>
+					{this.state.quotes.map((v, i) => <QuoteDisplay key={i} name={v.name} quote={v.message} time={new Date(Date.parse(v.time)).toLocaleString()}/>)}
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 		);	

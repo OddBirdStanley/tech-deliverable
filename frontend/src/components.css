@@ -1,0 +1,76 @@
+.quote-form-body {
+	display: flex;
+	align-items: center;
+	font-size: large;
+}
+
+.quote-form-input-box {
+	margin-right: 25px;
+}
+
+.quote-form-input-label {
+	margin-right: 10px;
+}
+
+.quote-form-input {
+	height: 40px;
+	font-size: inherit;
+}
+
+.quote-form-input-long {
+	width: 500px;
+}
+
+.quote-submit {
+	background-color: black;
+	color: white;
+	border: none;
+	padding: 0px 20px;
+	cursor: pointer;
+	height: 50px;
+	font-size: inherit;
+	transition: background-color 0.5s;
+}
+
+.quote-submit:hover {
+	background-color: grey;
+}
+
+.quote-history-select {
+	height: 50px;
+	width: 200px;
+	border: none;
+	cursor: pointer;
+	font-size: larger;
+	font-variant: small-caps;
+	margin-right: 10px;
+}
+
+.quote-history-select option {
+	font-variant: small-caps;
+}
+
+.quote-table {
+	border: none;
+	border-collapse: collapse;
+	padding: 25px;
+	width: 100%;
+	table-layout: fixed;
+}
+
+.quote-table tr {
+	height: 30px;
+}
+
+.quote-table tbody tr:hover {
+	background-color: rgb(42, 82, 190, 0.5);
+}
+
+.quote-table thead {
+	background-color: #2a52be;
+	color: white;
+}
+
+.quote-history-body {
+	margin-top: 10px;
+}

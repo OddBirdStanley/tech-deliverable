@@ -4,12 +4,8 @@ import "./App.css";
 function App() {
 	return (
 		<div className="App">
-			{/* TODO: include an icon for the quote book */}
-			<h1>Hack at UCI Tech Deliverable</h1>
-
-			<h2>Submit a quote</h2>
-
-			<h2>Previous Quotes</h2>
+			<img src="quotebook.png" width="50" height="50" style={{float: "left", marginRight: "20px"}}/>
+			<h1 style={{lineHeight: "50px"}}>Hack at UCI Tech Deliverable</h1>
 			<QuoteManager/>
 		</div>
 	);
